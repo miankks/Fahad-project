@@ -1,16 +1,24 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { IoIosEyeOff, IoMdEye } from 'react-icons/io';
+import { useDispatch, useSelector } from 'react-redux';
+import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice';
 
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false)
   const [passwordType, setPasswordType ] = useState("password");
 
+  // old states for error and loading
+  // const [error, setError] = useState(null);
+  // const [loading, setLoading] = useState(false);
+
+  // through redux
+  const {loading, error } = useSelector((state) => state.user)
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -22,7 +30,11 @@ const SignIn = () => {
     e.preventDefault();
 
     try {
-      setLoading(true);
+      // old set loading
+      // setLoading(true);
+
+      // through redux
+      dispatch(signInStart())
   
       const res = await fetch('/api/auth/signin', 
         {
@@ -34,16 +46,28 @@ const SignIn = () => {
         })
         const data = await res.json();
         if (data.success === false) {
-          setLoading(false);
-          setError(data.message);
+          // direct method
+          // setLoading(false);
+          // setError(data.message);
+
+          // through redux
+          dispatch(signInFailure(data.message))
           return;
         }
-        setLoading(false)
-        setError(null)
+        // direct method
+        // setLoading(false)
+        // setError(null)
+
+        // through redux
+        dispatch(signInSuccess(data))
         navigate('/')
     } catch (error) {
-      setLoading(false);
-      setError(error.message);
+      // direct method
+      // setLoading(false);
+      // setError(error.message);
+
+      // through redux
+      dispatch(signInFailure(error.message))
     }
   }
 
