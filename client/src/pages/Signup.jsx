@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { IoIosEyeOff, IoMdEye } from 'react-icons/io';
 
 
 const Signup = () => {
   const [formData, setFormData] = useState({});
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
+  const [passwordType, setPasswordType ] = useState("password");
 
   const navigate = useNavigate();
   const handleChange = (e) => {
@@ -43,6 +46,11 @@ const Signup = () => {
       setError(error.message);
     }
   }
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword)
+    setPasswordType(showPassword ? 'password' : 'text' )    
+  }
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl text-center font-semibold my-7'>Sign Up</h1>
@@ -51,8 +59,12 @@ const Signup = () => {
               onChange={handleChange}/>
         <input type="email" placeholder='Email' className='border p-3 rounded-lg' id='email'
               onChange={handleChange}/>
-        <input type="password" placeholder='Password' className='border p-3 rounded-lg' id='password'
+        <input type={passwordType} placeholder='Password' className='border p-3 rounded-lg' id='password'
               onChange={handleChange}/>
+          <span onClick={handleShowPassword} className='flex relative justify-end items-center'>
+            {showPassword ? <IoMdEye className='absolute justify-center mb-20 mr-1'/> :
+             <IoIosEyeOff className='absolute justify-center mb-20 mr-1' />}
+          </span>
         <button className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95
               disabled:opacity-80' disabled={loading}>
                 {loading? 'Loading': 'Sign Up'}
