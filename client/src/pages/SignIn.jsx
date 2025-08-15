@@ -1,8 +1,81 @@
-import React from 'react'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { IoIosEyeOff, IoMdEye } from 'react-icons/io';
+
 
 const SignIn = () => {
+  const [formData, setFormData] = useState({});
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
+  const [passwordType, setPasswordType ] = useState("password");
+
+  const navigate = useNavigate();
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id] : e.target.value
+    })
+  }
+
+  const handleSubmit = async (e) =>{
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+  
+      const res = await fetch('/api/auth/signin', 
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData),
+        })
+        const data = await res.json();
+        if (data.success === false) {
+          setLoading(false);
+          setError(data.message);
+          return;
+        }
+        setLoading(false)
+        setError(null)
+        navigate('/')
+    } catch (error) {
+      setLoading(false);
+      setError(error.message);
+    }
+  }
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword)
+    setPasswordType(showPassword ? 'password' : 'text' )    
+  }
   return (
-    <div>SignIn</div>
+    <div className='p-3 max-w-lg mx-auto'>
+      <h1 className='text-3xl text-center font-semibold my-7'>Sign In</h1>
+      <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
+        <input type="email" placeholder='Email' className='border p-3 rounded-lg' id='email'
+              onChange={handleChange}/>
+        <input type={passwordType} placeholder='Password' className='border p-3 rounded-lg' id='password'
+              onChange={handleChange}/>
+          <span onClick={handleShowPassword} className='flex relative justify-end items-center'>
+            {showPassword ? <IoMdEye className='absolute justify-center mb-20 mr-1'/> :
+             <IoIosEyeOff className='absolute justify-center mb-20 mr-1' />}
+          </span>
+        <button className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95
+              disabled:opacity-80' disabled={loading}>
+                {loading? 'Loading': 'Sign In'}
+        </button>
+      </form>
+      <div className='flex gap-2 mt-5'>
+        <p>Do not have an account?</p>
+        <Link to='/sign-up'>
+          <span className='text-blue-700'>Sign up</span>
+        </Link>
+      </div>
+      {error && <p className='text-red-500 mt-5'>{error}</p>}
+    </div>
   )
 }
 
