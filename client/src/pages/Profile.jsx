@@ -45,6 +45,10 @@ const Profile = () => {
     )
     })
   }
+
+  const handleChange = (e) => {
+    setFormData({...formData, [e.target.id]: e.target.value})
+  }
   // for image use self-center in image tag
   return (
     <div className='p-3 max-w-lg mx-auto'>
@@ -52,8 +56,8 @@ const Profile = () => {
       <form className='flex flex-col gap-4'>
         <input onChange={(e) => setFile(e.target.files[0])} type="file" ref={fileRef} hidden accept='image/*'/>
         <img onClick={() => fileRef.current.click()} 
-        src={formData.avatar || currentUser.avatar} alt="profile" 
-          className='rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2'/>
+              src={formData?.avatar || currentUser.avatar} alt="profile" 
+              className='rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2'/>
         <p className='text-sm self-center'>
           {fileUploadError ? 
             (<span className='text-red-700'>Error image upload (Image must be less than 2mb)
@@ -70,9 +74,12 @@ const Profile = () => {
                 ''
                 )}
         </p>
-        <input type="text" placeholder='username' className='border p-3 rounded-lg' id='username'/>
-        <input type="email" placeholder='email' className='border p-3 rounded-lg' id='email'/>
-        <input type="password" placeholder='password' className='border p-3 rounded-lg' id='password'/>
+        <input type="text" placeholder='username' className='border p-3 rounded-lg' id='username'
+            defaultValue={currentUser.username} onChange={handleChange}/>
+        <input type="email" placeholder='email' className='border p-3 rounded-lg' id='email'
+            defaultValue={currentUser.email} onChange={handleChange}/>
+        <input type="password" placeholder='password' className='border p-3 rounded-lg' id='password'
+                onChange={handleChange}/>
         <button className='bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95
                   disabled:opacity-80'>Update</button>
       </form>
