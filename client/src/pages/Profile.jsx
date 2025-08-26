@@ -169,7 +169,7 @@ const Profile = () => {
         <span onClick={handleSignOut} className='text-red-700 cursor-pointer'>Sign out</span>
       </div>
       <p className='text-red-700 mt-5'>{error? error : ''}</p>
-      <p className='text-green-700 mt-5'>{setUpdateSuccess ? 'User is Updated successfully' : ''}</p>
+      <p className='text-green-700 mt-5'>{updateSuccess ? 'User is Updated successfully' : ''}</p>
     </div>
   )
 }
