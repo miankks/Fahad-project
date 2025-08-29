@@ -140,6 +140,25 @@ const Profile = () => {
       setShowListingsError(true) 
     }
   }
+
+  const handleListingDelete = async (listingid) => {
+    try {
+      setShowListingsError(false);
+      const res = await fetch(`/api/listing/delete/${listingid}`,
+      {
+        method: 'DELETE'
+      })
+      const data = res.json();
+      if (data.success === false) {
+        console.log(data.message);
+      }
+
+      // get the previous data and filter out id with the listingid (deleted listing)
+      setUserListings((prev) => prev.filter((listing) => listing._id !== listingid));
+    } catch (error) {
+      setShowListingsError(true)
+    }
+  }
   // for image use self-center in image tag
   return (
     <div className='p-3 max-w-lg mx-auto'>
@@ -203,7 +222,7 @@ const Profile = () => {
               <p>{listing.name}</p>
             </Link>
             <div className="flex flex-col items-center">
-                <button className='text-red-700 uppercase'>Delete</button>
+                <button onClick={() => handleListingDelete(listing._id)} className='text-red-700 uppercase'>Delete</button>
                 <button className='text-green-700 uppercase'>Edit</button>
             </div>
           </div>

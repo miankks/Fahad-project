@@ -8,7 +8,7 @@ const CreateListing = () => {
     const { currentUser } = useSelector(state => state.user)
     const [files, setFiles] = useState([])
     const [formData, setFormData] = useState({
-        imageUrls: [],
+        imageUrls: ['fdsafdsffsdfds', 'sdfsdjfldkfjskls'],
         name: '',
         description: '',
         address: '',
@@ -131,7 +131,7 @@ const CreateListing = () => {
             if (data.success === false) {
                 setError(data.message);
             }
-            // navigate(`/listing/${data._id}`)
+            // navigate(`/listings/${data._id}`)
 
         } catch (error) {
             setError(error.message);
