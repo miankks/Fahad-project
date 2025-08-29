@@ -159,6 +159,10 @@ const Profile = () => {
       setShowListingsError(true)
     }
   }
+
+  const handleListingUpdate = () => {
+
+  }
   // for image use self-center in image tag
   return (
     <div className='p-3 max-w-lg mx-auto'>
@@ -223,7 +227,9 @@ const Profile = () => {
             </Link>
             <div className="flex flex-col items-center">
                 <button onClick={() => handleListingDelete(listing._id)} className='text-red-700 uppercase'>Delete</button>
-                <button className='text-green-700 uppercase'>Edit</button>
+                <Link to={`/update-listing/${listing._id}`}>
+                  <button onClick={() => handleListingUpdate(listing.id)} className='text-green-700 uppercase'>Edit</button>
+                </Link>
             </div>
           </div>
         ))}

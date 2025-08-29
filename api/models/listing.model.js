@@ -7,15 +7,15 @@ const listingSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: false
+        required: true
     },
     address: {
         type: String,
-        required: false
+        required: true
     },
     regularPrice: {
         type: Number,
-        required: false
+        required: true
     },
     discountPrice: {
         type: Number,
@@ -23,27 +23,27 @@ const listingSchema = new mongoose.Schema({
     },
     bathrooms: {
         type: Number,
-        required: false
+        required: true
     },
     bedrooms: {
         type: Number,
-        required: false
+        required: true
     },
     furnished: {
         type: Boolean,
-        required: false
+        required: true
     },
     parking: {
         type: Boolean,
-        required: false
+        required: true
     },
     type: {
         type: String,
-        required: false
+        required: true
     },
     offer: {
         type: Boolean,
-        required: false
+        required: true
     },
     imageUrls: {
         type: Array,
@@ -51,7 +51,7 @@ const listingSchema = new mongoose.Schema({
     },
     userRef: {
         type: String,
-        required: false
+        required: true
     }
 }, 
 {

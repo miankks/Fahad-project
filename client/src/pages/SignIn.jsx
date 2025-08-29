@@ -61,7 +61,7 @@ const SignIn = () => {
 
         // through redux
         dispatch(signInSuccess(data))
-        navigate('/')
+        navigate('/profile')
     } catch (error) {
       // direct method
       // setLoading(false);

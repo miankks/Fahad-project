@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { app } from '../firebase.js';
 import { useSelector} from 'react-redux';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
-const CreateListing = () => {
+const UpdateListing = () => {
+    const navigate = useNavigate();
+    const params = useParams();
     const { currentUser } = useSelector(state => state.user)
     const [files, setFiles] = useState([])
     const [formData, setFormData] = useState({
@@ -27,7 +29,20 @@ const CreateListing = () => {
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const navigate = useNavigate();
+    useEffect(() => {
+        const fetchListing = async () => {
+            // params listing ID is getting from app.js route
+            const listingId = params.listingId;
+            const res = await fetch(`/api/listing/get/${listingId}`);
+            const data = await res.json();
+            if (data.success === false) {
+                console.log(data.message);
+                return;
+            }
+            setFormData(data);
+        }
+        fetchListing();
+    }, [])
     const handleImageSubmit = (e) => {
         if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
             setUploading(true);
@@ -95,7 +110,6 @@ const CreateListing = () => {
 
         if (e.target.type === 'number' || e.target.type === 'text' || e.target.type === 'textarea') {
             setFormData({
-                ...formData,
                 [e.target.id]: e.target.value
             })
         }
@@ -117,7 +131,7 @@ const CreateListing = () => {
         try {
             setLoading(true);
             setError(false);
-            const res = await fetch('/api/listing/create', {
+            const res = await fetch(`/api/listing/update/${params.listingId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -141,18 +155,18 @@ const CreateListing = () => {
     }
   return (
     <main className='p-3 max-w-4xl mx-auto'>
-        <h1 className='text-3xl font-semibold text-center my-7'>Create a listing</h1>
+        <h1 className='text-3xl font-semibold text-center my-7'>Update Listing</h1>
         <form onSubmit={handleSubmit} className='flex flex-col sm:flex-row gap-4'>
             <div className='flex flex-col gap-4 flex-1'>
                 <input type="text"  placeholder='Name' className='border p-3 rounded-lg' id='name'
                         minLength='10' maxLength='62' required onChange={handleChange}
-                        value={formData.name}/>
+                        defaultValue={formData.name}/>
                 <textarea type="text"  placeholder='Description' className='border p-3 rounded-lg' 
                         id='description' required onChange={handleChange}
-                        value={formData.description}/>
+                        defaultValue={formData.description}/>
                 <input type="text"  placeholder='Adress' className='border p-3 rounded-lg' 
                         id='address' required onChange={handleChange}
-                        value={formData.address}/>
+                        defaultValue={formData.address}/>
                 <div className='flex gap-6 flex-wrap'>
                     <div className="flex gap-2">
                         <input type="checkbox" id='sale' className='w-5' onChange={handleChange}
@@ -188,7 +202,7 @@ const CreateListing = () => {
                         <p>Beds</p>
                     </div>
                     <div className="flex items-center gap-2">
-                        <input type="number" id='bathrooms' min='1' max='10' required
+                        <input type="number" id='bathsrooms' min='1' max='10' required
                             className='p-3 border border-gray-300 rounded-lg'
                             onChange={handleChange} defaultValue={formData.bathrooms}/>
                         <p>Bathrooms</p>
@@ -244,7 +258,7 @@ const CreateListing = () => {
             }
                 <button disabled={loading || uploading} className='p-3 bg-slate-700 text-white rounded-lg uppercase
                         hover:opacity-95 disabled:opacity-80 mt-5'>
-                    {loading ? 'Creating' : 'Create Listing'}
+                    {loading ? 'Updating...' : 'Update Listing'}
                 </button>
                 {error && <p className='text-red-700 text-sm'>{error}</p>}
             </div>
@@ -253,4 +267,4 @@ const CreateListing = () => {
   )
 }
 
-export default CreateListing
+export default UpdateListing
