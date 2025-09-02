@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { app } from '../firebase.js';
 import { useSelector} from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom'
 
 const UpdateListing = () => {
+    const { currentUser } = useSelector(state => state.user)
     const navigate = useNavigate();
     const params = useParams();
-    const { currentUser } = useSelector(state => state.user)
     const [files, setFiles] = useState([])
     const [formData, setFormData] = useState({
         imageUrls: ['fdsafdsffsdfds', 'sdfsdjfldkfjskls'],
@@ -110,6 +110,7 @@ const UpdateListing = () => {
 
         if (e.target.type === 'number' || e.target.type === 'text' || e.target.type === 'textarea') {
             setFormData({
+                ...formData,
                 [e.target.id]: e.target.value
             })
         }
@@ -146,7 +147,7 @@ const UpdateListing = () => {
             if (data.success === false) {
                 setError(data.message);
             }
-            navigate(`/listings/${data._id}`)
+            navigate(`/listing/${data._id}`)
 
         } catch (error) {
             setError(error.message);
@@ -223,10 +224,11 @@ const UpdateListing = () => {
                             onChange={handleChange} value={formData.discountPrice}/>
                             <div className='flex flex-col items-center'>
                                 <p>Discounted Price</p>
-                                <span className='text-xs'>($ /month)</span>
+                                {formData.type === 'rent' &&(<span className='text-xs'>($ /month)</span>
+                            )}
                             </div>
-                    </div> )
-                    }
+                        </div>
+                     )}
                 </div>
             </div>
             <div className="flex flex-col flex-1 gap-4">

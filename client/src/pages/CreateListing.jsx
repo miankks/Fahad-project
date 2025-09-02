@@ -132,7 +132,7 @@ const CreateListing = () => {
             if (data.success === false) {
                 setError(data.message);
             }
-            // navigate(`/listings/${data._id}`)
+            navigate(`/listing/${data._id}`)
 
         } catch (error) {
             setError(error.message);
@@ -202,17 +202,18 @@ const CreateListing = () => {
                                 <span className='text-xs'>($ /month)</span>
                             </div>
                     </div>
-                    {formData.offer && (
+                   {formData.offer && (
                     <div className="flex items-center gap-2">
                         <input type="number" id='discountPrice' min='0' max='1000000'
                             className='p-3 border border-gray-300 rounded-lg'
                             onChange={handleChange} value={formData.discountPrice}/>
                             <div className='flex flex-col items-center'>
                                 <p>Discounted Price</p>
-                                <span className='text-xs'>($ /month)</span>
+                                {formData.type === 'rent' &&(<span className='text-xs'>($ /month)</span>
+                            )}
                             </div>
-                    </div> )
-                    }
+                        </div>
+                     )}
                 </div>
             </div>
             <div className="flex flex-col flex-1 gap-4">
