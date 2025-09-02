@@ -189,9 +189,9 @@ const Profile = () => {
                 )}
         </p>
         <input type="text" placeholder='username' className='border p-3 rounded-lg' id='username'
-            defaultValue={currentUser.username} onChange={handleChange}/>
+            value={currentUser.username} onChange={handleChange}/>
         <input type="email" placeholder='email' className='border p-3 rounded-lg' id='email'
-            defaultValue={currentUser.email} onChange={handleChange}/>
+            value={currentUser.email} onChange={handleChange}/>
         <input type="password" placeholder='password' className='border p-3 rounded-lg' id='password'
                 onChange={handleChange}/>
         <button className='bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95

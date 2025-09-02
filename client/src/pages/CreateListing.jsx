@@ -184,19 +184,19 @@ const CreateListing = () => {
                     <div className="flex items-center gap-2">
                         <input type="number" id='bedrooms' min='1' max='10' required
                             className='p-3 border border-gray-300 rounded-lg'
-                            onChange={handleChange} defaultValue={formData.bedrooms}/>
+                            onChange={handleChange} value={formData.bedrooms}/>
                         <p>Beds</p>
                     </div>
                     <div className="flex items-center gap-2">
                         <input type="number" id='bathrooms' min='1' max='10' required
                             className='p-3 border border-gray-300 rounded-lg'
-                            onChange={handleChange} defaultValue={formData.bathrooms}/>
+                            onChange={handleChange} value={formData.bathrooms}/>
                         <p>Bathrooms</p>
                     </div>
                     <div className="flex items-center gap-2">
                         <input type="number" id='regularPrice' min='50' max='1000000' required
                             className='p-3 border border-gray-300 rounded-lg'
-                            onChange={handleChange} defaultValue={formData.regularPrice} />
+                            onChange={handleChange} value={formData.regularPrice} />
                             <div className="flex flex-col items-center">
                                 <p>Regular Price</p>
                                 <span className='text-xs'>($ /month)</span>
@@ -206,7 +206,7 @@ const CreateListing = () => {
                     <div className="flex items-center gap-2">
                         <input type="number" id='discountPrice' min='0' max='1000000'
                             className='p-3 border border-gray-300 rounded-lg'
-                            onChange={handleChange} defaultValue={formData.discountPrice}/>
+                            onChange={handleChange} value={formData.discountPrice}/>
                             <div className='flex flex-col items-center'>
                                 <p>Discounted Price</p>
                                 <span className='text-xs'>($ /month)</span>

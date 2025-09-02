@@ -146,7 +146,7 @@ const UpdateListing = () => {
             if (data.success === false) {
                 setError(data.message);
             }
-            // navigate(`/listings/${data._id}`)
+            navigate(`/listings/${data._id}`)
 
         } catch (error) {
             setError(error.message);
@@ -160,13 +160,13 @@ const UpdateListing = () => {
             <div className='flex flex-col gap-4 flex-1'>
                 <input type="text"  placeholder='Name' className='border p-3 rounded-lg' id='name'
                         minLength='10' maxLength='62' required onChange={handleChange}
-                        defaultValue={formData.name}/>
+                        value={formData.name}/>
                 <textarea type="text"  placeholder='Description' className='border p-3 rounded-lg' 
                         id='description' required onChange={handleChange}
-                        defaultValue={formData.description}/>
+                        value={formData.description}/>
                 <input type="text"  placeholder='Adress' className='border p-3 rounded-lg' 
                         id='address' required onChange={handleChange}
-                        defaultValue={formData.address}/>
+                        value={formData.address}/>
                 <div className='flex gap-6 flex-wrap'>
                     <div className="flex gap-2">
                         <input type="checkbox" id='sale' className='w-5' onChange={handleChange}
@@ -180,12 +180,12 @@ const UpdateListing = () => {
                     </div>
                     <div className="flex gap-2">
                         <input type="checkbox" id='parking' className='w-5' onChange={handleChange}
-                                checked={formData.parking}/>
+                                 checked={formData.parking}/>
                         <span>Parking Spot</span>
                     </div>
                     <div className="flex gap-2">
                         <input type="checkbox" id='furnished' className='w-5'onChange={handleChange}
-                                checked={formData.furnished}/>
+                                 checked={formData.furnished}/>
                         <span>Furnished</span>
                     </div>
                     <div className="flex gap-2">
@@ -198,19 +198,19 @@ const UpdateListing = () => {
                     <div className="flex items-center gap-2">
                         <input type="number" id='bedrooms' min='1' max='10' required
                             className='p-3 border border-gray-300 rounded-lg'
-                            onChange={handleChange} defaultValue={formData.bedrooms}/>
+                            onChange={handleChange} value={formData.bedrooms}/>
                         <p>Beds</p>
                     </div>
                     <div className="flex items-center gap-2">
                         <input type="number" id='bathsrooms' min='1' max='10' required
                             className='p-3 border border-gray-300 rounded-lg'
-                            onChange={handleChange} defaultValue={formData.bathrooms}/>
+                            onChange={handleChange} value={formData.bathrooms}/>
                         <p>Bathrooms</p>
                     </div>
                     <div className="flex items-center gap-2">
                         <input type="number" id='regularPrice' min='50' max='1000000' required
                             className='p-3 border border-gray-300 rounded-lg'
-                            onChange={handleChange} defaultValue={formData.regularPrice} />
+                            onChange={handleChange} value={formData.regularPrice} />
                             <div className="flex flex-col items-center">
                                 <p>Regular Price</p>
                                 <span className='text-xs'>($ /month)</span>
@@ -220,7 +220,7 @@ const UpdateListing = () => {
                     <div className="flex items-center gap-2">
                         <input type="number" id='discountPrice' min='0' max='1000000'
                             className='p-3 border border-gray-300 rounded-lg'
-                            onChange={handleChange} defaultValue={formData.discountPrice}/>
+                            onChange={handleChange} value={formData.discountPrice}/>
                             <div className='flex flex-col items-center'>
                                 <p>Discounted Price</p>
                                 <span className='text-xs'>($ /month)</span>
