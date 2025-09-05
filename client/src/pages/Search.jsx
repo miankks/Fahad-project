@@ -14,31 +14,11 @@ const Search = () => {
     });
     const [loading, setLoading] = useState(false);
     const [listings, setListings] = useState([]);
+    const [showMore, setShowMore] = useState(false)
 
-    
     const navigate = useNavigate();
 
-    const handleChange = (e) => {
-        if (e.target.id === 'all' || e.target.id === 'rent' || e.target.id === 'sale') {
-            setSidebardata({...sidebardata, type: e.target.id})
-        }
-
-        if (e.target.id === 'searchTerm') {
-            setSidebardata({...sidebardata, searchTerm: e.target.value})
-        }
-
-        if (e.target.id === 'parking' || e.target.id === 'furnished' || e.target.id === 'offer') {
-            setSidebardata({...sidebardata, [e.target.id] : e.target.checked || e.target.checked === 'true' ? true : false})
-        }
-
-        if (e.target.id === 'sort_order') {
-            const sort = e.target.value.split('_')[0] || 'created_at';
-            const order = e.target.value.split('_')[1] || 'desc';
-            setSidebardata({...sidebardata, sort, order});
-        }
-    }
-
-    useEffect(() => {
+       useEffect(() => {
         const urlParams = new URLSearchParams(location.search);
         const searchTermFromUrl = urlParams.get('searchTerm')
         const typeFromUrl = urlParams.get('type')
@@ -71,14 +51,36 @@ const Search = () => {
 
         const fetchListings = async () => {
             setLoading(true);
+            setShowMore(false)
             const searchQuery = urlParams.toString();
             const res = await fetch(`/api/listing/get?${searchQuery}`);
             const data = await res.json();
+            data.length > 8 ? setShowMore(true) : setShowMore(false);
             setListings(data);
             setLoading(false);
         }
         fetchListings();
     }, [location.search])
+
+    const handleChange = (e) => {
+        if (e.target.id === 'all' || e.target.id === 'rent' || e.target.id === 'sale') {
+            setSidebardata({...sidebardata, type: e.target.id})
+        }
+
+        if (e.target.id === 'searchTerm') {
+            setSidebardata({...sidebardata, searchTerm: e.target.value})
+        }
+
+        if (e.target.id === 'parking' || e.target.id === 'furnished' || e.target.id === 'offer') {
+            setSidebardata({...sidebardata, [e.target.id] : e.target.checked || e.target.checked === 'true' ? true : false})
+        }
+
+        if (e.target.id === 'sort_order') {
+            const sort = e.target.value.split('_')[0] || 'created_at';
+            const order = e.target.value.split('_')[1] || 'desc';
+            setSidebardata({...sidebardata, sort, order});
+        }
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -92,6 +94,20 @@ const Search = () => {
         urlParams.set('order', sidebardata.order);
         const searchQuery = urlParams.toString();
         navigate(`/search?${searchQuery}`);
+    }
+
+    const onShowMoreClick = async () => {
+        const numberOfListing = listings.length;
+        const startIndex = numberOfListing;
+        const urlParams = new URLSearchParams(location.search);
+        urlParams.set('startIndex', startIndex);
+        const searchQuery = urlParams.toString();
+        const res = await fetch(`/api/listing/get?${searchQuery}`);
+        const data = await res.json();
+        if (data.length < 9) {
+            setShowMore(false);
+        }
+        setListings([...listings, ...data])
     }
 
   return (
@@ -180,6 +196,12 @@ const Search = () => {
                     <ListingItem key={listing._id} listing={listing}/>
                 ))}
             </div>
+                {showMore && (
+                    <button onClick={onShowMoreClick} 
+                        className='text-green-700 hover:underline p-7 text-center w-full'>
+                        Show more
+                    </button>
+                )}
         </div>
     </div>
   )
