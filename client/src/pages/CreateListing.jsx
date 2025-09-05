@@ -8,7 +8,9 @@ const CreateListing = () => {
     const { currentUser } = useSelector(state => state.user)
     const [files, setFiles] = useState([])
     const [formData, setFormData] = useState({
-        imageUrls: [],
+        imageUrls: ['https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg',
+               'https://images.pexels.com/photos/1732414/pexels-photo-1732414.jpeg'
+        ],
         name: '',
         description: '',
         address: '',
