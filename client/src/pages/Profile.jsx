@@ -216,6 +216,7 @@ const Profile = () => {
       {userListings && userListings.length > 0 &&
       <div className='flex flex-col gap-4'>
         <h1 className='text-center mt-7 text-2xl font-semibold'>Your Listings</h1>
+        <p>Total listings: {userListings.length}</p>
         {userListings.map((listing) => (
           <div key={listing._id} className='flex border rounded-lg p-3 justify-between items-center gap-4'>
             <Link to={`/listing/${listing._id}`}>
