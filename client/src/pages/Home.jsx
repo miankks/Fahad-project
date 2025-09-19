@@ -1,15 +1,20 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import ListingItem from '../components/ListingItem';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import SwiperCore from 'swiper';
+import { StoreContext } from '../context/StoreContext';
 import 'swiper/css/bundle';
 
 const Home = () => {
   const [offerListings, setOfferListings] = useState([])
   const [saleListings, setSaleListings] = useState([])
   const [rentListings, setRentListings] = useState([])
+  const { assets_list } = useContext(StoreContext);
+  console.log(assets_list);
+  
+  
   SwiperCore.use([Navigation])
 
   useEffect(() => {
@@ -75,7 +80,7 @@ const Home = () => {
           ))
         }
       </Swiper>
-
+        <img src={assets_list.homepage_image} alt="food-item-image" className=''/>
       {/* listing results for offer, sale and rent */}
       <div className="max-w-6xl mx-auto p-3 flex flex-col gap-8 my-10">
         {
